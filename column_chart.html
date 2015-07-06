@@ -1,0 +1,124 @@
+<html>
+<head>
+  
+  <script type="text/javascript" src="raphael.js"></script>
+  
+<script>
+window.onload=function(){
+
+      var  obj={
+                "chart":{
+                          "width":"800",
+                          "height":"500",
+                          "caption":"Monthly revenue",
+                          "subcaption":"Last Year",
+                          "xaxisname":"month",
+                          "yaxisname":"revenue",
+                           "numberPrefix": "$"
+                        },
+                 "data":[
+                          {
+                              "label":"feb",
+                              "value":"20"
+                          },
+                          {
+                              "label":"mar",
+                              "value":"60"
+                          },
+                          {
+                            "label":"jun",
+                            "value":"70"
+                          },
+                          {
+                          "label":"aug",
+                          "value":"90"
+                           },
+                           {
+                           "label":"sep",
+                           "value":"120"
+                           },
+                           {
+                           "label":"oct",
+                           "value":"130"
+                           },
+                           {
+                           "label":"nov",
+                           "value":"140"
+                           },
+                           {
+                          "label":"dec",
+                          "value":"150"
+                          }
+                        ]
+
+                },
+
+        noOfData = obj.data.length,
+        space = (0.5*obj.chart.width)/(noOfData+1),
+        graphOrigin = [0.2*obj.chart.width,0.7*obj.chart.height],
+        i,
+        xaxis = [],
+        scaleFactor = 1,
+        width,a,
+        div,arr = [],
+        yaxisvalue = 0;
+       paper = Raphael(0, 0, obj.chart.width, obj.chart.height),scaleFactor = (0.45*obj.chart.height)/maxValue();
+       div = Math.round((1.07*maxValue()/5));
+      paper.text(0.5*obj.chart.width,(1/9)*obj.chart.height,obj.chart.caption).attr({"font-size":"30","font-weight": "bold"});
+      paper.text(0.5*obj.chart.width,(1/6)*obj.chart.height,obj.chart.subcaption).attr({"font-size":"20"});
+      paper.path("M"+" "+(0.39*obj.chart.width)+" "+(obj.chart.height-110)+"L"+" "+(0.54*obj.chart.width)+" "+(obj.chart.height-110)).attr({"stroke-width":"2","arrow-end":"classic-large"});
+      paper.text(0.46*obj.chart.width,obj.chart.height-90,obj.chart.xaxisname).attr({"font-size":"15"});
+      paper.path("M"+" "+(0.75*graphOrigin[0])+" "+(0.7*graphOrigin[1])+"L"+" "+(0.75*graphOrigin[0])+" "+(0.35*graphOrigin[1])).attr({"stroke-width":"2","arrow-end":"classic-large"});
+      paper.text(0.6*graphOrigin[0],graphOrigin[1]*0.55,obj.chart.yaxisname).attr({"font-size":"15"}).rotate(-90);
+    
+      chartstruc();
+      rect();
+      function chartstruc(){
+           for(i = 0;i <= 5;i++){
+         
+                paper.text(graphOrigin[0]-20,(graphOrigin[1]-(i*div*scaleFactor)),""+" "+yaxisvalue+obj.chart.numberPrefix);
+                paper.path("M"+""+graphOrigin[0]+" "+(graphOrigin[1]-(i*div*scaleFactor))+"L"+(0.8*obj.chart.width)+" "+(graphOrigin[1]-(i*div*scaleFactor)))
+                .attr({"stroke-dasharray": ". "});
+           
+           
+                yaxisvalue+=div;
+        }
+        paper.path("M"+""+graphOrigin[0]+" "+graphOrigin[1]+"L"+(graphOrigin[0])+" "+(graphOrigin[1]-(i*div*scaleFactor))).attr({"stroke-width":"2","arrow-end":"classic-large"});
+         
+    
+    }
+function rect(){
+         for(i = 0;i < noOfData;i++){       
+            width=space/2;
+            xaxis=[(graphOrigin[0]+(space*(i+0.5))),(graphOrigin[1]-((obj.data[i].value))*(scaleFactor))];
+            paper.rect(xaxis[0], xaxis[1], width , (obj.data[i].value)*scaleFactor).attr({fill:'blue'});
+            paper.path("M"+""+graphOrigin[0]+" "+graphOrigin[1]+"L"+(obj.chart.width*0.83)+" "+(graphOrigin[1])).attr({"arrow-end":"classic"});
+            
+            paper.text(xaxis[0]+(width/2),(graphOrigin[1]+(width/1.2)), ""+obj.data[i].label).attr({"font-size":"10"});//.rotate(-90);
+            
+          if(i==0)
+          {
+            a = 1.04;
+          }
+          else
+            a = 1.1;
+               
+            paper.text(xaxis[0]+(width/2),(a*xaxis[1]),obj.data[i].value).attr({fill: "white"}).rotate(-90);
+        }
+    }
+    function maxValue()
+    {
+      for(i = 0;i < noOfData;i++)
+      {
+       arr.push(obj.data[i].value);
+      }
+      arr.sort(function(a,b){return b-a;})
+  
+     return arr[0];
+  }
+  }
+</script>
+</head>
+<body>
+</body>
+</html>
